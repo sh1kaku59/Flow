@@ -1,0 +1,34 @@
+const fs = require('fs');
+
+let content = fs.readFileSync('src/pages/Profile.tsx', 'utf8');
+content = content.replace('import "./Profile.css"', 'import "./Profile.css"\nimport { useTranslation } from "../contexts/SettingsContext"');
+content = content.replace('const navigate = useNavigate()', 'const navigate = useNavigate()\n  const { t } = useTranslation()');
+content = content.replace('Date created:', '{t("Date created:")}');
+content = content.replace('>User Information<', '>{t("User Information")}<');
+content = content.replace('Keep your account information organized and up to date. Easily manage your profile details and ensure your identity is accurately reflected across all your activities in FLOW.', '{t("Keep your account information organized and up to date. Easily manage your profile details and ensure your identity is accurately reflected across all your activities in FLOW.")}');
+content = content.replace('>Voice Sample<', '>{t("Voice Sample")}<');
+content = content.replace('Your voice samples help FLOW recognize who is speaking in your meetings. Keep them updated to improve speaker identification and ensure more precise transcription and insights.', '{t("Your voice samples help FLOW recognize who is speaking in your meetings. Keep them updated to improve speaker identification and ensure more precise transcription and insights.")}');
+content = content.replace('>Settings<', '>{t("Settings")}<');
+content = content.replace('Configure your application preferences and personalize how you interact with FLOW. Manage settings related to your account, system behavior, and overall user experience.', '{t("Configure your application preferences and personalize how you interact with FLOW. Manage settings related to your account, system behavior, and overall user experience.")}');
+content = content.replace('>Log Out<', '>{t("Log Out")}<');
+fs.writeFileSync('src/pages/Profile.tsx', content);
+
+let userContent = fs.readFileSync('src/pages/profile/User.tsx', 'utf8');
+userContent = userContent.replace('import "./User.css"', 'import "./User.css"\nimport { useTranslation } from "../../contexts/SettingsContext"');
+userContent = userContent.replace('const navigate = useNavigate()', 'const navigate = useNavigate()\n    const { t } = useTranslation()');
+userContent = userContent.replace(/>User Information</g, '>{t("User Information")}<');
+userContent = userContent.replace(/>Username</g, '>{t("Username")}<');
+userContent = userContent.replace(/>Email</g, '>{t("Email")}<');
+userContent = userContent.replace(/>Date of Birth</g, '>{t("Date of Birth")}<');
+userContent = userContent.replace(/>Change Password</g, '>{t("Change Password")}<');
+userContent = userContent.replace(/>Information</g, '>{t("User Information")}<');
+userContent = userContent.replace(/>Cancel</g, '>{t("Cancel")}<');
+userContent = userContent.replace(/>Save changes</g, '>{t("Save changes")}<');
+userContent = userContent.replace(/>Save Changes</g, '>{t("Save changes")}<');
+userContent = userContent.replace(/>Current Password</g, '>{t("Current Password")}<');
+userContent = userContent.replace(/>New Password</g, '>{t("New Password")}<');
+userContent = userContent.replace(/>Confirm New Password</g, '>{t("Confirm New Password")}<');
+userContent = userContent.replace('Forgot password?', '{t("Forgot password?")}');
+userContent = userContent.replace(/>Avatar</g, '>{t("Avatar")}<');
+userContent = userContent.replace('← Back', '← {t("Back")}');
+fs.writeFileSync('src/pages/profile/User.tsx', userContent);

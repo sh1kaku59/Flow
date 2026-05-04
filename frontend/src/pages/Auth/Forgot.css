@@ -1,0 +1,115 @@
+.forgot-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+/* TOP GRADIENT */
+.forgot-top {
+  height: 180px;
+  background: #8F00FF;
+}
+
+/* CONTAINER */
+.forgot-container {
+  max-width: 400px;
+  margin: -150px auto 0;
+  text-align: center;
+}
+
+/* IMAGE */
+.forgot-illustration {
+  width: 250px;
+  height: 250px;
+  margin: 0 auto 30px;
+}
+
+/* TEXT */
+.forgot-text {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 40px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* OTP */
+.otp-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.otp-input {
+  width: 50px;
+  height: 60px;
+  border-radius: 10px;
+  border: none;
+  background: #ddd;
+  text-align: center;
+  font-size: 20px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.otp-input:focus {
+  background: #ccc;
+}
+
+/* RESEND */
+.resend {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.resend span {
+  color: #16a34a;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* VERIFY */
+.verify-btn {
+  width: 60%;
+  padding: 12px;
+  border-radius: 999px;
+  border: none;
+  background: #ccc;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+  cursor: not-allowed;
+  transition: 0.2s ease;
+}
+
+.verify-btn.active {
+  background: #22c55e;
+  cursor: pointer;
+}
+
+.verify-btn.active:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+}
+
+.forgot-text-message {
+  font-size: 13px;
+  color: #ff2e2e;
+  margin-bottom: 20px;
+}
+
+/* BACK */
+.forgotback-btn {
+  font-size: 14px;
+  cursor: pointer;
+  color: #333;
+  transition: 0.2s ease;
+  margin-bottom: 30px;
+}
+
+.forgotback-btn:hover {
+  color: black;
+    transform: translateY(-2px);
+}

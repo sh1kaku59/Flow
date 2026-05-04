@@ -1,0 +1,595 @@
+/* ===== THEME VARIABLES ===== */
+:root {
+  --bg: #f5f5f5;
+  --text: #111;
+  --subtext: #4b5563;
+
+  --card-bg: #eeeeee;
+  --card-border: #d1d5db;
+
+  --row-hover: rgba(0,0,0,0.03);
+
+  --input-bg: #ffffff;
+  --input-border: #cfcfcf;
+
+  --modal-bg: #f3f3f3;
+  --modal-text: #0f172a;
+
+  --accent: #111827;
+  --accent-soft: #f3f4f6;
+
+  --success: #22c55e;
+  --success-hover: #16a34a;
+
+  --danger: #ef4444;
+  --danger-soft: #fff4f4;
+}
+
+/* ===== DARK MODE ===== */
+.dark {
+  --bg: #0f0f0f;
+  --text: #f5f5f5;
+  --subtext: #9ca3af;
+
+  --card-bg: #1a1a1a;
+  --card-border: rgba(255,255,255,0.08);
+
+  --row-hover: rgba(255,255,255,0.05);
+
+  --input-bg: #111;
+  --input-border: #444;
+
+  --modal-bg: #1f1f1f;
+  --modal-text: #f5f5f5;
+
+  --accent: #e5e5e5;
+  --accent-soft: #2a2a2a;
+
+  --success: #22c55e;
+  --success-hover: #16a34a;
+
+  --danger: #f87171;
+  --danger-soft: rgba(239,68,68,0.15);
+}
+
+.voice-page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  padding: 40px 24px;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+.voice-container {
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.voice-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.back-btn {
+  position: absolute;
+  left: 0;
+  border: none;
+  background: none;
+  font-weight: 600;
+  color: var(--subtext);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.back-btn:hover {
+  color: var(--text);
+  transform: translateX(-3px);
+}
+
+.voice-header h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.voice-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.voice-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.voice-count {
+  font-weight: bold;
+}
+
+.voice-count span {
+  font-weight: normal;
+}
+
+.addvoice-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: var(--success);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.addvoice-btn:hover {
+  background: var(--success-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+.voice-table-header,
+.voice-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 3fr 70px;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.voice-table-header {
+  font-size: 12px;
+  color: var(--subtext);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.voice-row {
+  border-bottom: 1px solid var(--card-border);
+  transition: 0.2s ease;
+}
+
+.voice-row:hover {
+  background: var(--row-hover);
+}
+
+.col.name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar.small {
+  width: 40px;
+  height: 40px;
+  background: var(--input-bg);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dot-menu {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.dot-menu:hover {
+  background: var(--accent-soft);
+  transform: scale(1.1);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.pagination button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 12px;
+
+  border-radius: 10px;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.pagination button:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.pagination .active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.voice-alert {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-radius: 10px;
+}
+
+.voice-empty {
+  padding: 24px 10px;
+  color: var(--subtext);
+  text-align: center;
+}
+
+.col.sample audio {
+  width: 100%;
+  max-width: 320px;
+}
+
+.voice-audio-player::-webkit-media-controls-overflow-button {
+  display: none;
+}
+
+.voice-audio-player::-webkit-media-controls-toggle-closed-captions-button {
+  display: none;
+}
+
+.no-audio {
+  color: var(--subtext);
+}
+
+.voice-page .voice-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 3000;
+  padding: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.voice-page .voice-modal {
+  width: min(720px, 100%);
+  background: var(--modal-bg);
+  color: var(--modal-text);
+  border-radius: 22px;
+  padding: 24px;
+}
+
+.voice-page .voice-modal-title {
+  margin: 0 0 16px;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.voice-page .upload-zone {
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+  background: var(--input-bg);
+  border: 2px dashed var(--input-border);
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.voice-page .upload-zone:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+.voice-page .upload-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.voice-page .upload-file {
+  margin-top: 8px;
+  color: var(--subtext);
+  word-break: break-word;
+}
+
+.voice-page .upload-or {
+  margin: 14px 0;
+  color: var(--subtext);
+  font-size: 13px;
+}
+
+.voice-page .browse-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 9px 16px;
+  background: var(--success);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.voice-page .browse-btn:hover {
+  background: var(--success-hover);
+}
+
+.voice-page .voice-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.voice-page .sample-cancel-btn {
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  transition: 0.2s;
+}
+
+.voice-page .sample-cancel-btn:hover {
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.voice-page .sample-add-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  transition: 0.2s;
+}
+
+.voice-page .sample-add-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.voice-page .voice-modal,
+.voice-page .sample-modal {
+  animation: modalFade 0.25s ease;
+}
+
+.voice-page .sample-modal {
+  width: min(760px, 100%);
+  background: var(--card-bg);
+  color: var(--text);
+  border-radius: 20px;
+  padding: 26px 26px 24px;
+}
+
+.voice-page .sample-modal-title {
+  margin: 0 0 18px;
+  font-size: 30px;
+  line-height: 1.05;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.voice-page .sample-avatar-block {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 16px;
+}
+
+.voice-page .sample-avatar-picker {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.voice-page .sample-avatar-placeholder {
+  color: var(--subtext);
+}
+
+.voice-page .sample-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.voice-page .sample-avatar-plus {
+  position: absolute;
+  right: -2px;
+  bottom: 6px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 36px;
+  font-weight: 300;
+  background: #1ea700;
+}
+
+.voice-page .sample-readonly-id-wrap {
+  position: relative;
+  margin-top: 8px;
+}
+
+.voice-page .sample-readonly-id-label {
+  position: absolute;
+  top: -5px;
+  left: 12px;
+  padding: 0 6px;
+  font-size: 12px;
+  background: var(--card-bg);
+  color: var(--subtext);
+}
+
+.voice-page .sample-readonly-id {
+  width: 100%;
+  border: 2px solid var(--input-border);
+  color: var(--subtext);
+  border-radius: 10px;
+  height: 50px;
+  text-align: center;
+  font-size: 16px;
+  letter-spacing: 2px;
+  background: transparent;
+}
+
+.voice-page .sample-name-wrap {
+  margin-top: 22px;
+}
+
+.voice-page .sample-name-input {
+  width: 100%;
+  height: 58px;
+  border: none;
+  border-bottom: 2px solid var(--input-border);
+  color: var(--text);
+  background: transparent;
+  font-size: 33px;
+  padding: 4px 2px;
+  outline: none;
+}
+
+.voice-page .sample-modal-actions {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.voice-page .sample-modal-actions.right {
+  margin-top: 0;
+}
+
+.voice-page .sample-cancel-btn,
+.voice-page .sample-add-btn,
+.voice-page .sample-save-btn,
+.voice-page .sample-delete-btn {
+  border-radius: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid #c2c2c2;
+  height: 56px;
+  padding: 0 28px;
+  font-size: 20px;
+}
+
+.voice-page .sample-cancel-btn {
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+}
+
+.voice-page .sample-add-btn,
+.voice-page .sample-save-btn {
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+}
+
+.voice-page .sample-save-btn:disabled,
+.voice-page .sample-add-btn:disabled,
+.voice-page .sample-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.voice-page .sample-edit-actions {
+  margin-top: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.voice-page .sample-save-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+}
+
+.voice-page .sample-save-btn:hover {
+  background: var(--accent-hover);
+}
+
+.voice-page .sample-delete-btn {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: transparent;
+  transition: 0.2s;
+}
+
+.voice-page .sample-delete-btn:hover {
+  background: var(--danger-soft);
+}
+
+@media (max-width: 860px) {
+  .voice-panel {
+    padding: 20px;
+  }
+
+  .voice-table-header,
+  .voice-row {
+    grid-template-columns: 1.6fr 1fr 1.8fr 50px;
+    column-gap: 8px;
+  }
+
+  .sample-modal-title {
+    font-size: 36px;
+  }
+
+  .sample-name-input {
+    font-size: 28px;
+  }
+
+  .sample-edit-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sample-modal-actions.right {
+    justify-content: stretch;
+  }
+}
+
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

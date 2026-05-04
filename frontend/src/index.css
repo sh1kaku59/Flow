@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #101828;
+
+  --bg-soft: #f8fafc;
+  --shadow-soft: 0 2px 10px rgba(0,0,0,0.06);
+
+  --bg-main: #f5f5f5;
+  --bg-section: #e6e6e6;
+  --bg-card: #f5f5f5;
+
+  --text-primary: #171717;
+  --text-secondary: #5b5b5b;
+  --text-muted: #818181;
+
+  --border-color: #989898;
+  --divider: #dbdbdb;
+
+  --accent: #10b5e6;
+  --accent-hover: #0ea5d6;
+
+  --success: #21814d;
+  --error: #cc3030;
+
+  --modal-bg: #f3f3f3;
+  --modal-text: #0f172a;
+  --input-bg: #ffffff;
+
+  --input-border: #d1d5db;
+  --input-border-hover: #9ca3af;
+
+  --btn-cancel-border: #9ca3af;
+  --btn-cancel-hover: #f3f4f6;
+
+  --btn-primary: #000000;
+  --btn-primary-hover: #111827;
+  --btn-disabled: #d1d5db;
+
+  background: var(--bg-main);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark {
+  --bg-main: #0f0f0f;
+  --bg-section: #1a1a1a;
+  --bg-card: #111827;
+
+  --text-primary: #e5e7eb;
+  --text-secondary: #cbd5f5;
+  --text-muted: #9ca3af;
+
+  --border-color: #334155;
+  --divider: #374151;
+
+  --accent: #38bdf8;
+  --accent-hover: #0ea5e9;
+
+  --success: #4ade80;
+  --error: #f87171;
+
+  --modal-bg: #0f0f0f;
+  --modal-text: #f5f5f5;
+  --input-bg: #0f0f0f;
+
+  --input-border: #374151;
+  --input-border-hover: #6b7280;
+
+  --btn-cancel-border: #4b5563;
+  --btn-cancel-hover: #1f2937;
+
+  --btn-primary: #e5e7eb;
+  --btn-primary-hover: #ffffff;
+  --btn-disabled: #374151;
+}
+
+* {
+  box-sizing: border-box;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 40%, #f5f5f5 100%);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main content area */
+.app-content {
+  flex: 1;
+  max-width: 2400px;
+  width: 100%;
+  margin: 0 auto;
+
+}
+
+/* Smooth global transitions */
+button {
+  transition: all 0.2s ease;
+}
+
+/* Better input style baseline */
+input, select {
+  font-family: inherit;
+}
+
+/* Playback */
+.timeline-slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+}
+
+.timeline-slider::-webkit-slider-runnable-track {
+  background: transparent;
+}
+
+.timeline-slider::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+}

@@ -1,0 +1,76 @@
+/* ===== TOAST BASE ===== */
+.toast {
+    position: fixed;
+    overflow: hidden;
+    cursor: default;
+  
+    animation: toastIn 0.35s ease;
+  }
+  
+  /* ===== COLORS ===== */
+  .toast-success {
+    background: var(--success);
+    color: #fff;
+  }
+  
+  .toast-error {
+    background: var(--danger);
+    color: #fff;
+  }
+  
+  /* ===== ICON ===== */
+  .toast-icon {
+    font-size: 16px;
+    line-height: 1;
+  }
+  
+  /* ===== MESSAGE ===== */
+  .toast-message {
+    flex: 1;
+    word-break: break-word;
+  }
+  
+  /* ===== PROGRESS BAR ===== */
+  .toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: rgba(255,255,255,0.7);
+  
+    animation: toastProgress 3s linear forwards;
+  }
+  
+  /* ===== HOVER EFFECT ===== */
+  .toast:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  }
+  
+  /* ===== ENTER ANIMATION ===== */
+  @keyframes toastIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  /* ===== PROGRESS ANIMATION ===== */
+  @keyframes toastProgress {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+  
+  /* ===== DARK MODE ===== */
+  .dark .toast-success {
+    background: #16a34a;
+  }
+  
+  .dark .toast-error {
+    background: #f87171;
+  }

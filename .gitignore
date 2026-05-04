@@ -1,0 +1,36 @@
+# Secrets and environment files
+.env
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
+# Node.js dependencies and outputs
+**/node_modules/
+**/dist/
+**/build/
+
+# Python environments and caches
+.venv/
+**/.venv/
+**/__pycache__/
+**/*.pyc
+**/.ruff_cache/
+
+# Logs and runtime artifacts
+*.log
+*.out.log
+*.err.log
+*.pid
+
+# Archives and temporary files
+*.rar
+*.zip
+*.7z
+*.tmp
+*.temp
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/

@@ -1,0 +1,145 @@
+/* ===== HEADER THEME ===== */
+:root {
+  --header-bg: rgba(255, 255, 255, 0.6);
+  --header-border: #e5e7eb;
+  --header-shadow: rgba(0, 0, 0, 0.1);
+
+  --pill-bg: #f1f5f9;
+  --pill-hover: #e2e8f0;
+  --pill-text: #334155;
+
+  --pill-active-bg: #111;
+  --pill-active-text: #ffffff;
+
+  --avatar-bg: #f2f2f2;
+  --avatar-hover: #e5e5e5;
+  --avatar-icon: #555;
+}
+
+.dark {
+  --header-bg: rgba(20, 20, 20, 0.9);
+  --header-border: rgba(255, 255, 255, 0.08);
+  --header-shadow: rgba(0, 0, 0, 0.5);
+
+  --pill-bg: #1f2937;
+  --pill-hover: #374151;
+  --pill-text: #e5e7eb;
+
+  --pill-active-bg: #e5e5e5;
+  --pill-active-text: #111;
+
+  --avatar-bg: #1f2937;
+  --avatar-hover: #374151;
+  --avatar-icon: #ccc;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  backdrop-filter: blur(10px);
+  background: var(--header-bg);
+
+  border-bottom: 1px solid var(--header-border);
+  box-shadow: 0 1px 5px var(--header-shadow);
+}
+
+.header-inner {
+  max-width: 2400px;
+  margin: 0 auto;
+
+  height: 72px;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* LOGO */
+.logo {
+  width: 100px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-pill {
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+
+  background: var(--pill-bg);
+  color: var(--pill-text);
+
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-pill:hover {
+  background: var(--pill-hover);
+}
+
+.nav-pill.active {
+  background: var(--pill-active-bg);
+  color: var(--pill-active-text);
+}
+
+/* AVATAR BUTTON */
+.avatar-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--avatar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* SVG ICON */
+.avatar-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--avatar-icon);
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* HOVER */
+.avatar-btn:hover {
+  background: var(--avatar-hover);
+  transform: translateY(-1px);
+}
+
+/* ACTIVE STATE */
+.avatar-btn.active {
+  background: var(--pill-active-bg);
+}
+
+.avatar-btn.active .avatar-icon {
+  color: var(--pill-active-text);
+}
