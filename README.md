@@ -13,15 +13,15 @@
 
 ## 📌 1. Project Overview
 
-**Flow** is an enterprise-grade digital knowledge management and meeting intelligence platform designed to transform unstructured conversational audio into structured, searchable, and actionable digital assets[cite: 7].
+**Flow** is an enterprise-grade digital knowledge management and meeting intelligence platform designed to transform unstructured conversational audio into structured, searchable, and actionable digital assets.
 
-Inheriting the speech processing and diarization pipeline from the **FDSE 2025** research publication (*"V-Scribe: Structured Transcription of Vietnamese Speech for Digital Knowledge Management"*, Springer CCIS Vol 2708)[cite: 6], Flow introduces an asynchronous multi-container architecture that automates meeting transcription, speaker identification, conversational segmentation, and semantic retrieval[cite: 8, 9].
+Inheriting the speech processing and diarization pipeline from the **FDSE 2025** research publication (*"V-Scribe: Structured Transcription of Vietnamese Speech for Digital Knowledge Management"*, Springer CCIS Vol 2708)[cite: 6], Flow introduces an asynchronous multi-container architecture that automates meeting transcription, speaker identification, conversational segmentation, and semantic retrieval.
 
 ---
 
 ## 🏗️ 2. System Architecture
 
-The system implements a **Modular Monolithic Backend** combined with an **Isolated Asynchronous AI Worker Container** orchestrated via Redis / BullMQ queues[cite: 8]. The entire environment is containerized via Docker Compose behind an Nginx Reverse Proxy[cite: 8, 14]:
+The system implements a **Modular Monolithic Backend** combined with an **Isolated Asynchronous AI Worker Container** orchestrated via Redis / BullMQ queues. The entire environment is containerized via Docker Compose behind an Nginx Reverse Proxy:
 
 ```text
 [ Client Browser (React SPA) ]
@@ -65,20 +65,20 @@ The system implements a **Modular Monolithic Backend** combined with an **Isolat
 
 ## ✨ 3. Core Features
 
-* **Voice Profiling & Speaker Enrollment:** Enrolls user voice samples to construct reference acoustic embeddings, eliminating manual speaker labeling during meeting post-processing[cite: 7, 9].
+* **Voice Profiling & Speaker Enrollment:** Enrolls user voice samples to construct reference acoustic embeddings, eliminating manual speaker labeling during meeting post-processing.
 * **Automated Neural Processing Pipeline:**
-  * **Speaker Diarization:** Pyannote.audio sequence labeling for Voice Activity Detection (VAD) and Speaker Change Detection (SCD)[cite: 6, 8].
-  * **Vietnamese Speech-to-Text (ASR):** High-precision transcription powered by fine-tuned `PhoWhisper-large`[cite: 6, 8].
-  * **Meeting Intelligence:** Automated topic extraction, executive summarization, and speaker participation intensity metrics[cite: 7, 8].
-* **Vector Semantic Search:** Natural language conceptual queries (e.g., *"budget decisions"*) powered by PostgreSQL `pgvector` HNSW indexes[cite: 8, 9].
-* **Contextual Playback (Click-to-Play):** Interactive bidirectional synchronization between transcript segments and audio timestamps[cite: 7, 8].
-* **Enterprise Security:** "No-Download" view-only streaming, Supabase Row Level Security (RLS), and short-lived Signed URLs[cite: 7, 8].
+  * **Speaker Diarization:** Pyannote.audio sequence labeling for Voice Activity Detection (VAD) and Speaker Change Detection (SCD).
+  * **Vietnamese Speech-to-Text (ASR):** High-precision transcription powered by fine-tuned `PhoWhisper-large`.
+  * **Meeting Intelligence:** Automated topic extraction, executive summarization, and speaker participation intensity metrics.
+* **Vector Semantic Search:** Natural language conceptual queries (e.g., *"budget decisions"*) powered by PostgreSQL `pgvector` HNSW indexes.
+* **Contextual Playback (Click-to-Play):** Interactive bidirectional synchronization between transcript segments and audio timestamps.
+* **Enterprise Security:** "No-Download" view-only streaming, Supabase Row Level Security (RLS), and short-lived Signed URLs.
 
 ---
 
 ## 🗄️ 4. Database Schema & Core Entities
 
-The system uses Supabase (PostgreSQL with `pgvector` extension) to enforce referential integrity across 13 domain tables[cite: 9, 14]:
+The system uses Supabase (PostgreSQL with `pgvector` extension) to enforce referential integrity across 13 domain tables:
 
 ```text
 account                 # User identity, authentication credentials, and profiles
@@ -151,12 +151,12 @@ cd Flow
 
 ### Step 2: System Requirements & Prerequisites
 Ensure the following base tools are installed:
-* **Node.js:** `20.x` LTS (Docker images use `node:20-alpine`)[cite: 14, 15]
-* **npm:** `10+`[cite: 14, 15]
-* **Python:** `3.11.x` (AI Docker image uses `python:3.11-slim`)[cite: 14, 15]
-* **Docker Desktop & Docker Compose:** `v2+`[cite: 14, 15]
-* **Redis:** `7.x` (if running locally without Docker)[cite: 14, 15]
-* **FFmpeg:** Installed and added to system `PATH` (required for local audio normalization)[cite: 14, 15]
+* **Node.js:** `20.x` LTS (Docker images use `node:20-alpine`)
+* **npm:** `10+`
+* **Python:** `3.11.x` (AI Docker image uses `python:3.11-slim`)
+* **Docker Desktop & Docker Compose:** `v2+`
+* **Redis:** `7.x` (if running locally without Docker)
+* **FFmpeg:** Installed and added to system `PATH` (required for local audio normalization)
 
 ---
 
@@ -166,8 +166,8 @@ cd frontend
 npm install
 npm run dev
 ```
-* Default local URL: `http://localhost:5173`[cite: 14, 15]
-* *Note:* Vite is configured with `envDir: "../backend-node"` in `frontend/vite.config.js`, reading frontend environment variables directly[cite: 14, 15].
+* Default local URL: `http://localhost:5173`
+* *Note:* Vite is configured with `envDir: "../backend-node"` in `frontend/vite.config.js`, reading frontend environment variables directly.
 
 ---
 
@@ -184,7 +184,7 @@ Run the background worker in a separate terminal:
 cd backend-node
 npm run dev:worker
 ```
-* Backend health check: `http://localhost:9000/health`[cite: 14, 15]
+* Backend health check: `http://localhost:9000/health`
 
 ---
 
@@ -206,18 +206,18 @@ pip install -r ai_service/requirements.txt
 # Run AI service
 python -m uvicorn ai_service.main:app --host 0.0.0.0 --port 8001
 ```
-* AI Service health check: `http://localhost:8001/health`[cite: 14, 15]
+* AI Service health check: `http://localhost:8001/health`
 
 ---
 
 ### Step 6: Supabase & Database Configuration
-1. Create a project on [Supabase Dashboard](https://supabase.com)[cite: 14, 15].
-2. Apply the database schema via Supabase SQL Editor for the 13 required tables[cite: 14, 15].
-3. Create the following Supabase Storage buckets[cite: 14, 15]:
-   * `voice-samples`[cite: 14, 15]
-   * `avatars`[cite: 14, 15]
-   * `meeting-audios`[cite: 14, 15]
-4. Copy the Supabase URL and Service Role Key into `backend-node/.env`[cite: 14, 15].
+1. Create a project on [Supabase Dashboard](https://supabase.com).
+2. Apply the database schema via Supabase SQL Editor for the 13 required tables.
+3. Create the following Supabase Storage buckets:
+   * `voice-samples`
+   * `avatars`
+   * `meeting-audios`
+4. Copy the Supabase URL and Service Role Key into `backend-node/.env`.
 
 ---
 
@@ -254,7 +254,7 @@ EMBEDDING_DIM=512
 
 ## 🐳 8. Running Full Stack with Docker Compose
 
-Launch all containerized services with a single command[cite: 14, 15]:
+Launch all containerized services with a single command:
 
 ```bash
 docker compose up -d --build
@@ -264,14 +264,14 @@ docker compose up -d --build
 
 | Service | Container Name | Port | Description |
 | :--- | :--- | :--- | :--- |
-| **Frontend** | `frontend` | `80` (Internal) | React UI served via Nginx[cite: 14, 15] |
-| **Backend API** | `backend` | `9000` | Node.js REST API & Auth orchestration[cite: 14, 15] |
-| **Worker** | `worker` | Background | BullMQ Queue consumer[cite: 14, 15] |
-| **AI Engine** | `ai-service` | `8001` | FastAPI audio processing & STT[cite: 14, 15] |
-| **Redis** | `redis` | `6379` | In-memory message broker[cite: 14, 15] |
-| **Gateway** | `reverse-proxy` | `80 / 443` | Nginx reverse proxy & SSL manager[cite: 14, 15] |
+| **Frontend** | `frontend` | `80` (Internal) | React UI served via Nginx |
+| **Backend API** | `backend` | `9000` | Node.js REST API & Auth orchestration |
+| **Worker** | `worker` | Background | BullMQ Queue consumer |
+| **AI Engine** | `ai-service` | `8001` | FastAPI audio processing & STT |
+| **Redis** | `redis` | `6379` | In-memory message broker |
+| **Gateway** | `reverse-proxy` | `80 / 443` | Nginx reverse proxy & SSL manager |
 
-To stop all services[cite: 14]:
+To stop all services:
 ```bash
 docker compose down
 ```
@@ -280,26 +280,26 @@ docker compose down
 
 ## 🔧 9. Troubleshooting
 
-* **Redis connection refused:** Ensure the Redis container is healthy or local `redis-server` is running, and verify that `REDIS_URL` matches the network[cite: 15].
-* **Backend startup failure (Supabase error):** Verify that `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are correct and that the key role is `service_role`[cite: 15].
-* **AI Service `HF_TOKEN` error:** Pyannote diarization requires an accepted Hugging Face model agreement and a valid user access token[cite: 14, 15].
-* **Audio decoding errors:** Verify that `FFmpeg` is correctly installed on the operating system and accessible via terminal[cite: 14, 15].
+* **Redis connection refused:** Ensure the Redis container is healthy or local `redis-server` is running, and verify that `REDIS_URL` matches the network.
+* **Backend startup failure (Supabase error):** Verify that `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are correct and that the key role is `service_role`.
+* **AI Service `HF_TOKEN` error:** Pyannote diarization requires an accepted Hugging Face model agreement and a valid user access token.
+* **Audio decoding errors:** Verify that `FFmpeg` is correctly installed on the operating system and accessible via terminal.
 
 ---
 
 ## 🔒 10. Security & Data Protection
 
-* Never commit `.env` files or secret keys into version control[cite: 14, 15].
-* `SUPABASE_SERVICE_ROLE_KEY` must **never** be exposed in client-side code or public repositories[cite: 14, 15].
-* All storage files are accessed via temporary signed URLs with strict expiry policies[cite: 7, 8].
+* Never commit `.env` files or secret keys into version control.
+* `SUPABASE_SERVICE_ROLE_KEY` must **never** be exposed in client-side code or public repositories.
+* All storage files are accessed via temporary signed URLs with strict expiry policies.
 
 ---
 
 ## 👥 11. Contributors & Project Information
 
-* **Institution:** Faculty of Information Technology, Van Lang University, Ho Chi Minh City, Vietnam[cite: 7, 8]
-* **Project Mentor & Product Owner:** **Huu Nghia Huynh** (Institute for Experiential Technology)[cite: 7, 8]
+* **Institution:** Faculty of Information Technology, Van Lang University, Ho Chi Minh City, Vietnam
+* **Project Mentor & Product Owner:** **Huu Nghia Huynh** (Institute for Experiential Technology)
 * **Development Team (Group 22):**
-  - **Ngoc Minh Vu** – Core Architecture, Backend & AI Pipeline ([GitHub](https://github.com/sh1kaku59) | [LinkedIn](https://linkedin.com/in/vungocminh9702) | [Email](mailto:wanbitido090@gmail.com))[cite: 7, 8, 9]
-  - **Minh Duc Nhan** – System Design, Documentation & Frontend Integration[cite: 7, 8, 9]
-  - **Vu Huy Nguyen** – Requirements Analysis, Testing & Infrastructure[cite: 7, 8, 9]
+  - **Ngoc Minh Vu** – Core Architecture, Backend & AI Pipeline ([GitHub](https://github.com/sh1kaku59) | [LinkedIn](https://linkedin.com/in/vungocminh9702) | [Email](mailto:wanbitido090@gmail.com))
+  - **Minh Duc Nhan** – System Design, Documentation & Frontend Integration
+  - **Vu Huy Nguyen** – Requirements Analysis, Testing & Infrastructure
