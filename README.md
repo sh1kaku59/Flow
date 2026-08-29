@@ -1,215 +1,243 @@
-# FLOW
+# Flow: Meeting Content Digitization & Intelligence Platform
 
-## 1. Project Overview
-FLOW is a meeting-audio post-processing system. Users upload meeting audio, then FLOW processes it into structured transcript segments, speaker-related data, summaries, semantic-search data, diary records, and contextual playback data for reviewing conversations.
+[![Project](https://img.shields.io/badge/Capstone_Project-Van_Lang_University-red.svg)](https://vlu.edu.vn)
+[![Scientific Base](https://img.shields.io/badge/Research_Base-FDSE_2025-blue.svg)](https://link.springer.com/chapter/10.1007/978-981-95-4721-0_23)
+[![Frontend](https://img.shields.io/badge/Frontend-React.js_%7C_Vite_%7C_TailwindCSS-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Backend](https://img.shields.io/badge/Backend-Node.js_%7C_Express_%7C_BullMQ-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![AI Core](https://img.shields.io/badge/AI_Engine-Python_%7C_FastAPI_%7C_PyTorch-3776AB?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Database](https://img.shields.io/badge/Database-Supabase_%7C_PostgreSQL_%7C_pgvector-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
+[![Message Queue](https://img.shields.io/badge/Message_Broker-Redis_7-DC382D?logo=redis&logoColor=white)](https://redis.io/)
+[![Containerization](https://img.shields.io/badge/Deployment-Docker_%7C_Docker_Compose_%7C_Nginx-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 
-## 2. Main Project Structure
-- `frontend/`: React + Vite web app for authentication, upload, diary list/detail, transcript review, semantic search, playback, profile, and settings screens.
-- `backend-node/`: Node.js API service for auth/session handling, Supabase integration, upload intake, Redis/BullMQ job orchestration, and AI-service communication.
-- `ai_service/`: Python FastAPI service for audio preprocessing, STT/ASR, speaker processing, semantic analysis, and output generation.
-- `reverse-proxy/`: Nginx reverse-proxy and certificate automation helpers for deployment.
-- `docker-compose.yml`: Multi-service stack for `redis`, `backend`, `worker`, `ai-service`, `frontend`, `reverse-proxy`, and `certbot`.
-- Root environment config: root `.env` is used by Docker Compose build args for frontend; `backend-node/.env` is used by backend/worker and also consumed by AI service in Docker mode.
+---
 
-## 3. Setup Steps
+## 📌 1. Project Overview
+
+**Flow** is an enterprise-grade digital knowledge management and meeting intelligence platform designed to transform unstructured conversational audio into structured, searchable, and actionable digital assets[cite: 7].
+
+Inheriting the speech processing and diarization pipeline from the **FDSE 2025** research publication (*"V-Scribe: Structured Transcription of Vietnamese Speech for Digital Knowledge Management"*, Springer CCIS Vol 2708)[cite: 6], Flow introduces an asynchronous multi-container architecture that automates meeting transcription, speaker identification, conversational segmentation, and semantic retrieval[cite: 8, 9].
+
+---
+
+## 🏗️ 2. System Architecture
+
+The system implements a **Modular Monolithic Backend** combined with an **Isolated Asynchronous AI Worker Container** orchestrated via Redis / BullMQ queues[cite: 8]. The entire environment is containerized via Docker Compose behind an Nginx Reverse Proxy[cite: 8, 14]:
+
+```text
+[ Client Browser (React SPA) ]
+              │
+              ▼ HTTPS (Port 443 / 80)
+┌────────────────────────────────────────────────────────────────────────┐
+│ Virtual Machine (Host Environment)                                     │
+│                                                                        │
+│   ┌────────────────────────────────────────────────────────────────┐   │
+│   │ Nginx Reverse Proxy Container (TLS Termination & Rate Limiting)│   │
+│   └───────┬────────────────────────┬───────────────────────┬───────┘   │
+│           │ /                      │ /api/                 │ /ai/      │
+│           ▼                        ▼                       ▼           │
+│   ┌───────────────┐        ┌───────────────┐       ┌───────────────┐   │
+│   │ Frontend UI   │        │ Backend API   │       │ AI Service    │   │
+│   │ (React + Vite)│        │ (Node.js REST)│       │ (FastAPI App) │   │
+│   └───────────────┘        └───────┬───────┘       └───────▲───────┘   │
+│                                    │                       │           │
+│                      Dispatch Job  ▼                       │ HTTP Task │
+│                        ┌───────────────────┐               │ Invocation│
+│                        │  Redis Message    │               │           │
+│                        │  Broker (BullMQ)  │               │           │
+│                        └─────────┬─────────┘               │           │
+│                                  │                         │           │
+│                     Consume Task ▼                         │           │
+│                        ┌───────────────────────────────────┴───┐       │
+│                        │ Node.js Background Worker Container   │       │
+│                        └───────────────────┬───────────────────┘       │
+└────────────────────────────────────────────┼───────────────────────────┘
+                                             │ Outbound TLS / HTTPS
+                                             ▼
+                      ┌─────────────────────────────────────────┐
+                      │ External Managed BaaS (Supabase Cloud)  │
+                      │ • PostgreSQL: Structured Relational DB  │
+                      │ • pgvector: 512-dim Semantic Embeddings │
+                      │ • Object Storage: Audios & Avatars      │
+                      └─────────────────────────────────────────┘
+```
+
+---
+
+## ✨ 3. Core Features
+
+* **Voice Profiling & Speaker Enrollment:** Enrolls user voice samples to construct reference acoustic embeddings, eliminating manual speaker labeling during meeting post-processing[cite: 7, 9].
+* **Automated Neural Processing Pipeline:**
+  * **Speaker Diarization:** Pyannote.audio sequence labeling for Voice Activity Detection (VAD) and Speaker Change Detection (SCD)[cite: 6, 8].
+  * **Vietnamese Speech-to-Text (ASR):** High-precision transcription powered by fine-tuned `PhoWhisper-large`[cite: 6, 8].
+  * **Meeting Intelligence:** Automated topic extraction, executive summarization, and speaker participation intensity metrics[cite: 7, 8].
+* **Vector Semantic Search:** Natural language conceptual queries (e.g., *"budget decisions"*) powered by PostgreSQL `pgvector` HNSW indexes[cite: 8, 9].
+* **Contextual Playback (Click-to-Play):** Interactive bidirectional synchronization between transcript segments and audio timestamps[cite: 7, 8].
+* **Enterprise Security:** "No-Download" view-only streaming, Supabase Row Level Security (RLS), and short-lived Signed URLs[cite: 7, 8].
+
+---
+
+## 🗄️ 4. Database Schema & Core Entities
+
+The system uses Supabase (PostgreSQL with `pgvector` extension) to enforce referential integrity across 13 domain tables[cite: 9, 14]:
+
+```text
+account                 # User identity, authentication credentials, and profiles
+setting                 # User preferences (theme, language, notifications)
+voice_sample            # Reference audio samples and voiceprint embedding vectors
+meeting                 # Meeting metadata, processing status, and ownership
+audio_file              # Raw audio file references, duration, and formats
+processing_job          # Job-level lifecycle and progress tracking
+processing_step         # Step-level execution tracking (STT, diarization, analysis)
+speaker                 # Meeting participants identified by acoustic matching
+transcript_segment      # Timestamped transcript segments mapped to speakers
+semantic_segment        # Topic-based semantic timeline segments
+speaker_statistic       # Speaking frequency and interaction intensity metrics
+search_index            # 512-dimension vector embeddings for semantic search
+meeting_summary         # AI-generated meeting summaries
+```
+
+---
+
+## 📂 5. Project Structure
+
+```text
+Flow/
+├── ai_service/                  # Python FastAPI AI processing engine
+│   ├── analysis/                # NLP summaries, topics, and behavioral analytics
+│   ├── asr/                     # PhoWhisper Speech-to-Text pipeline
+│   ├── audio/                   # Chunking, noise reduction, and preprocessing
+│   ├── speaker/                 # Pyannote diarization & ECAPA-TDNN embeddings
+│   ├── Dockerfile               # AI container specification
+│   ├── main.py                  # FastAPI service entry point
+│   └── requirements.txt         # PyTorch, Transformers, Pyannote dependencies
+│
+├── backend-node/                # Node.js Modular Monolith & Async Worker
+│   ├── src/
+│   │   ├── config/              # AppConfig & environment management
+│   │   ├── queues/              # RedisQueueManager (BullMQ orchestrator)
+│   │   ├── services/            # Domain services (Auth, Meeting, User, Voice)
+│   │   └── utils/               # Crypto, Storage, DateTime, Validation helpers
+│   ├── server.js                # REST API entry point (Port 9000)
+│   ├── worker.js                # Background job queue consumer
+│   ├── Dockerfile               # Backend container specification
+│   └── package.json             # Node.js dependencies
+│
+├── frontend/                    # React.js Single Page Application (SPA)
+│   ├── src/
+│   │   ├── assets/              # Icons, illustrations, and static assets
+│   │   ├── components/          # Reusable UI component library (Design System)
+│   │   ├── pages/               # Auth, Landing, Dashboard, DiaryDetail, Profile
+│   │   ├── services/            # REST API client & Supabase auth service
+│   │   └── App.tsx              # SPA routing & application layout
+│   ├── nginx.conf               # Internal Nginx web server config (Port 80)
+│   ├── Dockerfile               # Multi-stage production build container
+│   └── package.json             # React, Vite, Tailwind CSS dependencies
+│
+├── reverse-proxy/               # Nginx gateway reverse proxy configuration
+├── docker-compose.yml           # Multi-service container orchestration
+├── .gitignore                   # Version control exclusion rules
+└── README.md                    # Project documentation
+```
+
+---
+
+## 🚀 6. Installation & Setup Guide
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/sh1kaku59/Flow.git
+git clone [https://github.com/sh1kaku59/Flow.git](https://github.com/sh1kaku59/Flow.git)
 cd Flow
 ```
 
-### Step 2: Install Required Software
-Install these tools first:
-- Git
-- Node.js + npm
-- Python
-- Docker Desktop + Docker Compose
-- Redis (if running without Docker)
-- FFmpeg (required for local AI audio processing)
+### Step 2: System Requirements & Prerequisites
+Ensure the following base tools are installed:
+* **Node.js:** `20.x` LTS (Docker images use `node:20-alpine`)[cite: 14, 15]
+* **npm:** `10+`[cite: 14, 15]
+* **Python:** `3.11.x` (AI Docker image uses `python:3.11-slim`)[cite: 14, 15]
+* **Docker Desktop & Docker Compose:** `v2+`[cite: 14, 15]
+* **Redis:** `7.x` (if running locally without Docker)[cite: 14, 15]
+* **FFmpeg:** Installed and added to system `PATH` (required for local audio normalization)[cite: 14, 15]
 
-Recommended versions based on the current source:
-- Node.js: `20.x` LTS (Dockerfiles use `node:20-alpine`)
-- npm: `10+`
-- Python: `3.11.x` recommended (AI Dockerfile uses `python:3.11-slim`)
-- Docker Desktop: latest stable
-- Docker Compose: v2+
-- Redis: `7.x` (Compose uses `redis:7-alpine`)
+---
 
-### Step 3: Setup Frontend Environment
+### Step 3: Frontend Setup (React + Vite)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+* Default local URL: `http://localhost:5173`[cite: 14, 15]
+* *Note:* Vite is configured with `envDir: "../backend-node"` in `frontend/vite.config.js`, reading frontend environment variables directly[cite: 14, 15].
 
-Default local URL:
-- `http://localhost:5173`
+---
 
-Important env behavior:
-- Vite is configured with `envDir: "../backend-node"` in `frontend/vite.config.js`, so local frontend env values are read from `backend-node/.env` (or prefixed env loaded there).
-
-### Step 4: Setup Backend Environment
+### Step 4: Backend Setup (Node.js)
+In a new terminal window:
 ```bash
 cd backend-node
 npm install
 npm run dev
 ```
 
-Run worker in a second terminal:
+Run the background worker in a separate terminal:
 ```bash
 cd backend-node
 npm run dev:worker
 ```
+* Backend health check: `http://localhost:9000/health`[cite: 14, 15]
 
-Backend health check:
-- `http://localhost:9000/health`
+---
 
-Required backend env variables (placeholders only):
-```env
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-REDIS_URL=redis://127.0.0.1:6379
-AI_SERVICE_URL=http://127.0.0.1:8001
-BACKEND_CALLBACK_URL=http://127.0.0.1:9000/ai/progress
-FRONTEND_ORIGIN=http://localhost:5173,http://127.0.0.1:5173
-SESSION_COOKIE_NAME=sid
-VOICE_BUCKET=voice-samples
-AVATAR_BUCKET=avatars
-MEETING_AUDIO_BUCKET=meeting-audios
-```
-
-### Step 5: Setup AI Processing Service
-From repository root:
+### Step 5: AI Processing Service Setup (Python)
+From the repository root:
 ```bash
+# Create virtual environment
 python -m venv .venv
-```
 
-Activate virtual environment:
-
-Windows:
-```bash
+# Activate environment
+# On Windows:
 .venv\Scripts\activate
-```
-
-macOS/Linux:
-```bash
+# On macOS/Linux:
 source .venv/bin/activate
-```
 
-Install dependencies:
-```bash
+# Install dependencies
 pip install -r ai_service/requirements.txt
-```
 
-Run AI service:
-```bash
+# Run AI service
 python -m uvicorn ai_service.main:app --host 0.0.0.0 --port 8001
 ```
+* AI Service health check: `http://localhost:8001/health`[cite: 14, 15]
 
-AI health check:
-- `http://localhost:8001/health`
+---
 
-Notes:
-- `HF_TOKEN` is required for pyannote-based embedding/diarization paths.
-- `ffmpeg` must be available on `PATH` for robust audio normalization.
+### Step 6: Supabase & Database Configuration
+1. Create a project on [Supabase Dashboard](https://supabase.com)[cite: 14, 15].
+2. Apply the database schema via Supabase SQL Editor for the 13 required tables[cite: 14, 15].
+3. Create the following Supabase Storage buckets[cite: 14, 15]:
+   * `voice-samples`[cite: 14, 15]
+   * `avatars`[cite: 14, 15]
+   * `meeting-audios`[cite: 14, 15]
+4. Copy the Supabase URL and Service Role Key into `backend-node/.env`[cite: 14, 15].
 
-### Step 6: Setup Database with Supabase
-1. Create a Supabase project.
-2. Configure authentication providers used by the app (email/password and Google OAuth if needed).
-3. Apply the project database schema used by backend services. Tables referenced by code include:
-   - `account`
-   - `setting`
-   - `voice_sample`
-   - `meeting`
-   - `processing_job`
-   - `processing_step`
-   - `audio_file`
-   - `speaker`
-   - `transcript_segment`
-   - `semantic_segment`
-   - `speaker_statistic`
-   - `search_index`
-   - `meeting_summary`
-4. Create storage buckets (or set custom names via env):
-   - `voice-samples`
-   - `avatars`
-   - `meeting-audios`
-5. Copy Supabase URL + service role key into `backend-node/.env`.
-6. Never expose service role keys in frontend code or public repositories.
+---
 
-### Step 7: Setup Redis
-Option A, using Docker Compose:
-```bash
-docker compose up -d redis
-```
+## ⚙️ 7. Environment Configuration
 
-Option B, local Redis:
-```bash
-redis-server
-```
-
-Redis is required for BullMQ queues used by backend/worker processing stages.
-
-### Step 8: Run Full System with Docker Compose
-Before running, set:
-- root `.env` for frontend build args (`VITE_API_BASE_URL`, `VITE_SUPABASE_URL`)
-- `backend-node/.env` for backend/worker/AI runtime env
-
-Start full stack:
-```bash
-docker compose up -d --build
-```
-
-Services started:
-- `redis`
-- `backend`
-- `worker`
-- `ai-service`
-- `frontend`
-- `reverse-proxy`
-- `certbot`
-
-### Step 9: Verify System Integration
-1. Open frontend UI.
-2. Register or log in.
-3. Upload meeting audio.
-4. Confirm job progresses through preprocessing, STT, and analysis.
-5. Check diary list and diary detail view.
-6. Verify transcript segments, speaker labels/statistics, summary generation, semantic search, and audio playback context.
-
-### Step 10: Code Standards and Tools
-- Frontend linting:
-```bash
-cd frontend
-npm run lint
-```
-- Frontend production build:
-```bash
-cd frontend
-npm run build
-```
-- Keep secrets out of Git.
-- Prefer `.env.example` templates for onboarding.
-- Keep folder naming and service boundaries consistent with current structure.
-
-## 4. Environment Variables
-
-### Root `.env` (Docker Compose build args for frontend)
+### Root `.env` (Docker Compose build arguments for Frontend)
 ```env
-VITE_API_BASE_URL=https://your-domain-or-api-base
-VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_API_BASE_URL=http://localhost:9000
+VITE_SUPABASE_URL=[https://your-project.supabase.co](https://your-project.supabase.co)
 ```
 
-### `backend-node/.env` (runtime env for backend, worker, and AI in Compose)
+### `backend-node/.env` (Runtime environment for Backend, Worker, and AI)
 ```env
 PORT=9000
-SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_URL=[https://your-project.supabase.co](https://your-project.supabase.co)
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-HF_TOKEN=your_huggingface_token
-FRONTEND_ORIGIN=http://localhost:5173,http://127.0.0.1:5173
-AI_SERVICE_URL=http://127.0.0.1:8001
-BACKEND_CALLBACK_URL=http://127.0.0.1:9000/ai/progress
+HF_TOKEN=your_huggingface_access_token
+FRONTEND_ORIGIN=http://localhost:5173,[http://127.0.0.1:5173](http://127.0.0.1:5173)
+AI_SERVICE_URL=[http://127.0.0.1:8001](http://127.0.0.1:8001)
+BACKEND_CALLBACK_URL=[http://127.0.0.1:9000/ai/progress](http://127.0.0.1:9000/ai/progress)
 REDIS_URL=redis://127.0.0.1:6379
 VOICE_BUCKET=voice-samples
 AVATAR_BUCKET=avatars
@@ -219,37 +247,59 @@ SESSION_COOKIE_SECURE=false
 SESSION_COOKIE_SAMESITE=lax
 QUEUE_WORKER_CONCURRENCY=1
 RATE_LIMIT_DISABLED=false
+EMBEDDING_DIM=512
 ```
 
-### Optional AI tuning env
-`ai_service/main.py` also reads optional tuning values such as `MAX_MEETING_FILE_MB`, diarization limits, overlap thresholds, and matching thresholds.
+---
 
-## 5. Common Issues and Troubleshooting
-- Docker/Compose not installed:
-  Install Docker Desktop and ensure `docker compose` works in terminal.
-- Redis connection refused:
-  Ensure Redis is running and `REDIS_URL` matches runtime network.
-- Backend fails at startup with Supabase error:
-  Confirm `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are set and key role is `service_role`.
-- Frontend cannot call backend:
-  Check `VITE_API_BASE_URL` and `FRONTEND_ORIGIN` CORS settings.
-- AI service errors about `HF_TOKEN`:
-  Set a valid Hugging Face token for pyannote model access.
-- Python dependency/runtime mismatch:
-  Use Python `3.11.x` (project Docker image baseline) to avoid wheel/compatibility issues.
-- Audio decoding problems:
-  Install FFmpeg and ensure it is available in `PATH`.
+## 🐳 8. Running Full Stack with Docker Compose
 
-## 6. Deployment Notes
-- `docker-compose.yml` is ready for multi-container deployment.
-- `reverse-proxy/nginx.conf` routes:
-  - `/` to frontend
-  - `/api/` to backend
-  - `/ai/` to AI service
-- `reverse-proxy/init-certbot.sh` contains certificate bootstrap flow and should be reviewed/updated before production use.
+Launch all containerized services with a single command[cite: 14, 15]:
 
-## 7. Security Notes
-- Never commit `.env` files.
-- If a key is exposed, rotate it immediately (Supabase service role key, HF token, etc.).
-- Use environment variables or secret managers in deployment.
-- Never expose `SUPABASE_SERVICE_ROLE_KEY` to frontend/client code.
+```bash
+docker compose up -d --build
+```
+
+**Service Endpoints:**
+
+| Service | Container Name | Port | Description |
+| :--- | :--- | :--- | :--- |
+| **Frontend** | `frontend` | `80` (Internal) | React UI served via Nginx[cite: 14, 15] |
+| **Backend API** | `backend` | `9000` | Node.js REST API & Auth orchestration[cite: 14, 15] |
+| **Worker** | `worker` | Background | BullMQ Queue consumer[cite: 14, 15] |
+| **AI Engine** | `ai-service` | `8001` | FastAPI audio processing & STT[cite: 14, 15] |
+| **Redis** | `redis` | `6379` | In-memory message broker[cite: 14, 15] |
+| **Gateway** | `reverse-proxy` | `80 / 443` | Nginx reverse proxy & SSL manager[cite: 14, 15] |
+
+To stop all services[cite: 14]:
+```bash
+docker compose down
+```
+
+---
+
+## 🔧 9. Troubleshooting
+
+* **Redis connection refused:** Ensure the Redis container is healthy or local `redis-server` is running, and verify that `REDIS_URL` matches the network[cite: 15].
+* **Backend startup failure (Supabase error):** Verify that `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are correct and that the key role is `service_role`[cite: 15].
+* **AI Service `HF_TOKEN` error:** Pyannote diarization requires an accepted Hugging Face model agreement and a valid user access token[cite: 14, 15].
+* **Audio decoding errors:** Verify that `FFmpeg` is correctly installed on the operating system and accessible via terminal[cite: 14, 15].
+
+---
+
+## 🔒 10. Security & Data Protection
+
+* Never commit `.env` files or secret keys into version control[cite: 14, 15].
+* `SUPABASE_SERVICE_ROLE_KEY` must **never** be exposed in client-side code or public repositories[cite: 14, 15].
+* All storage files are accessed via temporary signed URLs with strict expiry policies[cite: 7, 8].
+
+---
+
+## 👥 11. Contributors & Project Information
+
+* **Institution:** Faculty of Information Technology, Van Lang University, Ho Chi Minh City, Vietnam[cite: 7, 8]
+* **Project Mentor & Product Owner:** **Huu Nghia Huynh** (Institute for Experiential Technology)[cite: 7, 8]
+* **Development Team (Group 22):**
+  - **Ngoc Minh Vu** – Core Architecture, Backend & AI Pipeline ([GitHub](https://github.com/sh1kaku59) | [LinkedIn](https://linkedin.com/in/vungocminh9702) | [Email](mailto:wanbitido090@gmail.com))[cite: 7, 8, 9]
+  - **Minh Duc Nhan** – System Design, Documentation & Frontend Integration[cite: 7, 8, 9]
+  - **Vu Huy Nguyen** – Requirements Analysis, Testing & Infrastructure[cite: 7, 8, 9]
